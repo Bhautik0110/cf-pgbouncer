@@ -1,0 +1,35 @@
+---
+version: '3.7'
+services:
+  db:
+    image: postgres:13.5
+    environment:
+      POSTGRES_USER: webauditor-logs
+      POSTGRES_PASSWORD: webauditor-logs
+      POSTGRES_DB: webauditor-logs
+    ports:
+      - 5431:5432
+
+  pgbouncer:
+    image: cf-pgbouncer
+    environment:
+      DATABASES_HOST: db
+      DATABASES_PORT: "5432"
+      DATABASES_POOL_MODE: "session"
+      DATABASES_MAX_DB_CONNECTIONS: "10"
+      PGBOUNCER_MAX_CLIENT_CONN: "10"
+      PGBOUNCER_DEFAULT_POOL_SIZE: "10"
+      PGBOUNCER_MIN_POOL_SIZE: "10"
+      PGBOUNCER_RESERVE_POOL_SIZE: "10"
+      PGBOUNCER_MAX_USER_CONNECTIONS: "10"
+      PGBOUNCER_AUTH_TYPE: "md5"
+      PGBOUNCER_AUTH_USER: "pgbouncer"
+      PGBOUNCER_AUTH_FILE: "/etc/pgbouncer/userlist.txt"
+      PGBOUNCER_AUTH_QUERY: "SELECT p_user, p_password FROM public.lookup($$1)"
+    ports:
+      - 5411:5432
+    depends_on:
+      - db
+    volumes:
+      - ./authfile.txt:/etc/pgbouncer/userlist.txt:ro
+    restart: on-failure
