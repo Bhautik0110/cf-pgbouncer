@@ -33,4 +33,5 @@ PG Bouncer supports the three types of authentication.
 - https://blog.cloudflare.com/open-sourcing-our-fork-of-pgbouncer/
 - https://www.cybertec-postgresql.com/en/pgbouncer-authentication-made-easy/
 - https://github.com/cloudflare/cf-pgbouncer
-- https://github.com/cloudflare/cf-pgbouncer
+- https://www.pgbouncer.org/usage.html
+
